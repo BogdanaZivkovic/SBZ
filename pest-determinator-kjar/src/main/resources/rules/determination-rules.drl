@@ -1,0 +1,27 @@
+//created on: 15.05.2022.
+package rules
+
+//list any import classes here.
+import com.sbnz.pestdeterminatorapp.model.Plant;
+import com.sbnz.pestdeterminatorapp.model.Symptom;
+import com.sbnz.pestdeterminatorapp.model.Pest;
+
+//declare any global variables here
+
+
+rule "Pest determination"
+		salience((100*$value) / $symptoms.size())
+    when
+        $p: Pest($name: name, $symptoms: symptoms, $plantSpecies: plantSpecies, $plantParts: plantParts)
+        $pl: Plant(currentPest == null, $registeredSymptoms: symptoms, $pestHistory : pestHistory, plantSpecies memberOf $plantSpecies)
+        Number($value : intValue >= 2) from accumulate (
+            Symptom($t:this, this memberOf $symptoms) from $registeredSymptoms,
+        	count($t)       
+        )     
+    then
+        System.out.println("Pest: " + $name);
+    	System.out.println("Number of symptoms registered: " + $value + "/" + $symptoms.size());
+    	modify($pl) { setCurrentPest($p) }
+
+end
+
