@@ -5,6 +5,8 @@ package rules
 import com.sbnz.pestdeterminatorapp.model.Plant;
 import com.sbnz.pestdeterminatorapp.model.Symptom;
 import com.sbnz.pestdeterminatorapp.model.Pest;
+import com.sbnz.pestdeterminatorapp.model.PlantPart;
+import com.sbnz.pestdeterminatorapp.model.PlantSpecies;
 
 //declare any global variables here
 
@@ -13,11 +15,14 @@ rule "Pest determination"
 		salience((100*$value) / $symptoms.size())
     when
         $p: Pest($name: name, $symptoms: symptoms, $plantSpecies: plantSpecies, $plantParts: plantParts)
-        $pl: Plant(currentPest == null, $registeredSymptoms: symptoms, $pestHistory : pestHistory, plantSpecies memberOf $plantSpecies)
+        $pl: Plant(currentPest == null, $registeredSymptoms: symptoms, $pestHistory : pestHistory, $affectedParts : affectedParts, plantSpecies memberOf $plantSpecies)
+        
+        forall(PlantPart($affectedParts.contains(this)) from $plantParts)
+        
         Number($value : intValue >= 2) from accumulate (
             Symptom($t:this, this memberOf $symptoms) from $registeredSymptoms,
         	count($t)       
-        )     
+        )
     then
         System.out.println("Pest: " + $name);
     	System.out.println("Number of symptoms registered: " + $value + "/" + $symptoms.size());
