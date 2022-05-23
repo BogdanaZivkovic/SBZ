@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
+import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
 import com.sbnz.pestdeterminatorapp.model.Pest;
 import com.sbnz.pestdeterminatorapp.model.PlantPart;
 import com.sbnz.pestdeterminatorapp.model.PlantSpecies;
@@ -239,6 +241,15 @@ public class PestRepositoryImplementation {
 		plantParts12.add(PlantPart.Leaf);
 		plantParts12.add(PlantPart.Stem);
 		p12.setPlantParts(plantParts12);
+		
+		List<ControlMeasure> controlMeasures1 = new LinkedList<>();
+		controlMeasures1.add(new ControlMeasure("Crop rotation", ControlMeasureType.Cultural));
+		p1.setControlMeasures(controlMeasures1);
+		
+		List<ControlMeasure> controlMeasures6 = new LinkedList<>();
+		controlMeasures6.add(new ControlMeasure("Hand-picking", ControlMeasureType.Mechanical));
+		controlMeasures6.add(new ControlMeasure("Trap cropping", ControlMeasureType.Cultural));
+		p6.setControlMeasures(controlMeasures6);
 		
 		pests.add(p1);
 		pests.add(p2);

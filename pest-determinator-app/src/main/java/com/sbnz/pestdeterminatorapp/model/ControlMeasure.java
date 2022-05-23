@@ -5,6 +5,12 @@ public class ControlMeasure {
 	private String name;
 	private ControlMeasureType type;
 	
+	public ControlMeasure(String name, ControlMeasureType type) {
+		super();
+		this.name = name;
+		this.type = type;
+	}
+	
 	public String getName() {
 		return name;
 	}

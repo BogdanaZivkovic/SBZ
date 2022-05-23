@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbnz.pestdeterminatorapp.service.PestDeterminatorService;
+import com.sbnz.pestdeterminatorapp.dto.ControlMeasureInputDTO;
 import com.sbnz.pestdeterminatorapp.dto.DeterminationInputDTO;
 
 @RestController
@@ -22,9 +23,16 @@ public class PestDeterminatorController {
 	private PestDeterminatorService pestDeterminatorService;
 	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public void getQuestions(@RequestBody DeterminationInputDTO dto) {
+	public void getPest(@RequestBody DeterminationInputDTO dto) {
 
 		pestDeterminatorService.determinePest(dto);
+
+	}
+	
+	@RequestMapping(value = "/control", method = RequestMethod.GET, produces = "application/json")
+	public void getDiagnosis(@RequestBody ControlMeasureInputDTO dto) {
+
+		pestDeterminatorService.getDiagnosis(dto);
 
 	}
 }

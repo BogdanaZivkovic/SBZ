@@ -7,9 +7,13 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sbnz.pestdeterminatorapp.dto.ControlMeasureInputDTO;
 import com.sbnz.pestdeterminatorapp.dto.DeterminationInputDTO;
+import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
+import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
 import com.sbnz.pestdeterminatorapp.model.Pest;
 import com.sbnz.pestdeterminatorapp.model.Plant;
+import com.sbnz.pestdeterminatorapp.repository.ControlMeasureRepositoryImplementation;
 import com.sbnz.pestdeterminatorapp.repository.PestRepositoryImplementation;
 
 @Service
@@ -19,6 +23,7 @@ public class PestDeterminatorService {
 	private KieContainer kieContainer;
 	
 	private final PestRepositoryImplementation pestRepository = new PestRepositoryImplementation();
+	private final ControlMeasureRepositoryImplementation controlMeasureRepository = new ControlMeasureRepositoryImplementation();
 	
 	public void determinePest(DeterminationInputDTO dto) {
 		KieSession kieSession = kieContainer.newKieSession();
@@ -40,5 +45,24 @@ public class PestDeterminatorService {
 		kieSession.insert(plant);
 		
 		kieSession.fireAllRules();
+	}
+	
+	public void getDiagnosis(ControlMeasureInputDTO dto) {
+		KieSession kieSession = kieContainer.newKieSession();
+		
+		List<ControlMeasure> controlMeasures = controlMeasureRepository.findAll();
+		
+		for(ControlMeasure controlMeasure : controlMeasures) {
+			kieSession.insert(controlMeasure);
+		}
+		
+		Pest pest = pestRepository.findByName(dto.getPest());
+		kieSession.insert(pest);
+		
+		ControlMeasureType type = dto.getControlMeasureType();	
+		kieSession.insert(type);
+		
+		kieSession.fireAllRules();
+		
 	}
 }

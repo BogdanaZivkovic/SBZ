@@ -1,0 +1,25 @@
+//created on: 23.05.2022.
+package rules
+
+//list any import classes here.
+
+import com.sbnz.pestdeterminatorapp.model.Pest;
+import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
+import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
+
+//declare any global variables here
+
+rule "Control measure selection"
+
+    when
+        $pest: Pest($name : name, $controlMeasures : controlMeasures)
+        $cmt : ControlMeasureType()
+        $c: ControlMeasure() from $controlMeasures
+        $cm : ControlMeasure($controlMeasureName: name, name == $c.name, type == $cmt)      
+    then
+    	System.out.println("Pest: " + $name);
+    	System.out.println("Control measure type: " + $cmt);
+        System.out.println("Appropriate control measure: " + $controlMeasureName);
+
+end
+
