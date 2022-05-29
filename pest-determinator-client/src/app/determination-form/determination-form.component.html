@@ -1,18 +1,32 @@
-<div class="container-fluid">
+<div class="container-fluid mb-3">
     <div class="row justify-content-center">
-      <div class="col-md-4">
+      <div class="col-md-5">
         <h1 style="text-align: center;">Pest determination form</h1>
-        <form (ngSubmit)="onClickSubmit()" #determinationForm="ngForm">
-          <div class="form-group mb-3">
+        <ng-container [formGroup]="this.determinationForm">
+          <div class="mb-3 container-bg p-3">
             <label for="plant" class="form-label">Plant:</label>
-            <select id="plant" class="form-control">
-                <option *ngFor="let plant of user.plants" [(ngModel)]="user.plants" name="plant" #plant="ngModel">{{plant.plantSpecies}}</option>
+            <select id="plant" class="form-control" formControlName="plant" >
+                <option *ngFor="let plant of plants" [ngValue]="plant">#{{plant.id}}: {{plant.plantSpecies}} </option>
             </select>
           </div>
-          <div class="d-grid col-6 mx-auto">
-            <button class="btn btn-primary" type="submit" [disabled]="!determinationForm.form.valid">Submit</button>
+          <div class="mb-3 container-bg p-3">
+            <label for="plantParts" class="form-label">Plant parts affected:</label>
+            <div *ngFor="let plantPart of plantParts; let i=index">
+              <input type="checkbox" formArrayName="selectedPlantParts" [value]="plantPart.value" (change)="onCheckboxChange($event)" />
+              {{plantPart.name}}
+            </div>
           </div>
-      </form>
+          <div class="mb-3 container-bg p-3">
+            <label for="symptoms" class="form-label">Symptoms:</label>
+            <div *ngFor="let symptom of symptoms; let i=index">
+              <input type="checkbox" formArrayName="selectedSymptoms" (change)="onSymptomCheckboxChange($event)" />
+              {{symptom}}
+            </div>
+          </div>
+        </ng-container>
+        <div class="d-grid col-6 mx-auto">
+        <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
       </div>
     </div>
   </div>

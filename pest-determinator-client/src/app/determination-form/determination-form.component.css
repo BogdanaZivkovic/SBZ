@@ -1,9 +1,10 @@
 
 h1{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: rgb(63, 78, 167);
+    color: rgb(30, 92, 24);
 }
 
-h3 {
-    font-family: 
-}
+.container-bg {
+    background-color: rgb(228, 243, 226);
+    border-radius: 25px;
+  }

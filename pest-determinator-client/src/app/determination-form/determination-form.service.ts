@@ -13,11 +13,11 @@ export class DeterminationFormService {
     return this.http.get<any>('http://localhost:8080/determination/symptoms');
   }
 
-  getPlants(): Observable<any> {
+  getUserPlants(): Observable<any> {
     return this.http.get<any>('http://localhost:8080/plants');
   }
 
-  getUser(): Observable<any> {
-    return this.http.get<any> ('http://localhost:8080/users')
+  determinePest(): Observable<any> {
+    return this.http.get<any> ('http://localhost:8080/determination');
   }
 }
