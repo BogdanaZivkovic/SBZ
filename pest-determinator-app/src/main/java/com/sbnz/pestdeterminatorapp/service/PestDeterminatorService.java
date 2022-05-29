@@ -16,8 +16,6 @@ import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
 import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
 import com.sbnz.pestdeterminatorapp.model.Pest;
 import com.sbnz.pestdeterminatorapp.model.Plant;
-import com.sbnz.pestdeterminatorapp.model.PlantPart;
-import com.sbnz.pestdeterminatorapp.model.PlantSpecies;
 import com.sbnz.pestdeterminatorapp.model.Symptom;
 import com.sbnz.pestdeterminatorapp.repository.ControlMeasureRepositoryImplementation;
 import com.sbnz.pestdeterminatorapp.repository.PestRepositoryImplementation;
@@ -70,16 +68,6 @@ public class PestDeterminatorService {
 		
 		kieSession.fireAllRules();
 		
-	}
-
-	public Collection<PlantSpecies> getPlantSpecies() {
-		List<PlantSpecies> plantSpeciesList = new ArrayList<PlantSpecies>(EnumSet.allOf(PlantSpecies.class));
-		return plantSpeciesList;
-	}
-
-	public Collection<PlantPart> getPlantParts() {
-		List<PlantPart> plantPartsList = new ArrayList<PlantPart>(EnumSet.allOf(PlantPart.class));
-		return plantPartsList;
 	}
 	
 	public Collection<Symptom> getSymptoms() {

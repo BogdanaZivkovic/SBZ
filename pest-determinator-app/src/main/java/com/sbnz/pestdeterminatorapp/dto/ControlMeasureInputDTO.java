@@ -1,7 +1,6 @@
 package com.sbnz.pestdeterminatorapp.dto;
 
 import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
-import com.sbnz.pestdeterminatorapp.model.Pest;
 
 public class ControlMeasureInputDTO {
 	private ControlMeasureType controlMeasureType;

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
 import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
 import com.sbnz.pestdeterminatorapp.model.Pest;
@@ -11,7 +13,8 @@ import com.sbnz.pestdeterminatorapp.model.PlantPart;
 import com.sbnz.pestdeterminatorapp.model.PlantSpecies;
 import com.sbnz.pestdeterminatorapp.model.Symptom;
 
-public class PestRepositoryImplementation {
+@Repository
+public class PestRepositoryImplementation implements PestRepository{
 	
 	private List<Pest> pests = new ArrayList<Pest>();	
 
@@ -265,10 +268,12 @@ public class PestRepositoryImplementation {
 		pests.add(p12);	
 	}
 
+	@Override
 	public List<Pest> findAll(){
 		return pests;
 	}
 	
+	@Override
 	public Pest findByName(String name) {
 		
 		for(Pest pest : pests) {

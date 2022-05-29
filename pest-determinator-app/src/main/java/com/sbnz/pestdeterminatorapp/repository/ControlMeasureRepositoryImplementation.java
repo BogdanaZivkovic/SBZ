@@ -3,10 +3,13 @@ package com.sbnz.pestdeterminatorapp.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
 import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
 
-public class ControlMeasureRepositoryImplementation {
+@Repository
+public class ControlMeasureRepositoryImplementation implements ControlMeasureRepository {
 	
 	private List<ControlMeasure> controlMeasures = new ArrayList<ControlMeasure>();	
 

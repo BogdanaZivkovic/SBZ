@@ -10,12 +10,14 @@ import com.sbnz.pestdeterminatorapp.repository.PlantRepository;
 import com.sbnz.pestdeterminatorapp.service.serviceInterface.PlantService;
 
 @Service
-public class PlantServiceImpl implements PlantService {
+public class PlantServiceImplementation implements PlantService {
+	
+	@Autowired 
+	PlantRepository plantRepository;
 
 	@Override
 	public Plant findById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return plantRepository.findById(id);
 	}
 
 	@Override
@@ -26,8 +28,7 @@ public class PlantServiceImpl implements PlantService {
 
 	@Override
 	public List<Plant> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return plantRepository.findAll();
 	}
 
 	@Override

@@ -1,50 +1,19 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 style="text-align: center;">Pest determination</h1>
-            <h3 style="text-align: center;">Fill in the form</h3>
-            <mat-horizontal-stepper [linear]=true #stepper>
-            <mat-step [stepControl]="firstFormGroup">
-                <form [formGroup]="firstFormGroup">
-                <ng-template matStepLabel>Basic information</ng-template>
-                <mat-form-field>
-                    <mat-label>Plant species</mat-label>
-                    <input matInput placeholder="Species" formControlName="plantSpecies" required>
-                </mat-form-field>
-                <div>
-                    <button mat-button matStepperNext>Next</button>
-                </div>
-                </form>
-            </mat-step>
-            <mat-step [stepControl]="secondFormGroup">
-                <form [formGroup]="secondFormGroup">
-                <ng-template matStepLabel>Symptoms</ng-template>
-                <mat-form-field>
-                    <mat-label>Symptoms</mat-label>
-                    <input matInput placeholder="symptoms" formControlName="symptoms" required>
-                </mat-form-field>
-                <br>
-                <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button matStepperNext>Next</button>
-                </div>
-                </form>
-            </mat-step>
-            <mat-step>
-                <ng-template matStepLabel>Done</ng-template>
-                <p>Completed form preview</p>
-                <mat-list>
-                <mat-list-item> <strong>Plant species:</strong> {{ this.firstFormGroup.value.plantSpecies }}</mat-list-item>
-                <mat-list-item> <strong>Plant parts:</strong> </mat-list-item>
-                <mat-list-item> <strong>Symptoms:</strong> </mat-list-item>
-                </mat-list>
-                <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button (click)="stepper.reset()">Reset</button>
-                <button mat-button (click)="submit()">Submit</button>
-                </div>
-            </mat-step>
-            </mat-horizontal-stepper>
-        </div>
+      <div class="col-md-4">
+        <h1 style="text-align: center;">Pest determination form</h1>
+        <form (ngSubmit)="onClickSubmit()" #determinationForm="ngForm">
+          <div class="form-group mb-3">
+            <label for="plant" class="form-label">Plant:</label>
+            <select id="plant" class="form-control">
+                <option *ngFor="let plant of user.plants" [(ngModel)]="user.plants" name="plant" #plant="ngModel">{{plant.plantSpecies}}</option>
+            </select>
+          </div>
+          <div class="d-grid col-6 mx-auto">
+            <button class="btn btn-primary" type="submit" [disabled]="!determinationForm.form.valid">Submit</button>
+          </div>
+      </form>
+      </div>
     </div>
-</div>
+  </div>
+  

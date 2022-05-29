@@ -9,16 +9,15 @@ export class DeterminationFormService {
 
   constructor(private http: HttpClient) { }
 
-  getPlantSpecies(): Observable<any> {
-    return this.http.get<any>('http://localhost:8080/determination/species');
-  }
-
-  getPlantParts(): Observable<any> {
-    return this.http.get<any>('http://localhost:8080/determination/parts');
-  }
-
   getSymptoms(): Observable<any> {
     return this.http.get<any>('http://localhost:8080/determination/symptoms');
   }
 
+  getPlants(): Observable<any> {
+    return this.http.get<any>('http://localhost:8080/plants');
+  }
+
+  getUser(): Observable<any> {
+    return this.http.get<any> ('http://localhost:8080/users')
+  }
 }

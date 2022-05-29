@@ -10,43 +10,37 @@ import { DeterminationFormService } from './determination-form.service';
 export class DeterminationFormComponent implements OnInit {
 
   errorMessage = '';
-  plantSpeciesList: any[] = [];
+  user: any;
+  plant: any;
   plantPartsList: any[] = [];
   symptomsList: any[] = [];
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+  determinationForm: FormGroup;
   
   constructor(private determinationFormService: DeterminationFormService, private formBuilder: FormBuilder) { 
-    this.firstFormGroup = this.formBuilder.group({
-      plantSpecies: ['', Validators.required],
-      plantParts: []
-    });
-
-    this.secondFormGroup = this.formBuilder.group({
-      symptoms: []
+    this.determinationForm = this.formBuilder.group({
+      plant: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
-    this.determinationFormService.getPlantSpecies().subscribe({
-      next: (data: any[]) => this.plantSpeciesList = data,
-      error: (err: any) => this.errorMessage = err
-    });
+    this.getUser();
+  }
+
+  getUser() {
+    this.determinationFormService.getUser().subscribe({
+      next: user => this.user = user,
+      error: err => this.errorMessage = err
+    })
+  }
+
+  getSymptoms() {
     this.determinationFormService.getSymptoms().subscribe({
       next: (data: any[]) => this.symptomsList = data,
       error: (err: any) => this.errorMessage = err
     });
-    this.determinationFormService.getPlantParts().subscribe({
-      next: (data: any[]) => this.plantPartsList = data,
-      error: (err: any) => this.errorMessage = err
-    });
   }
 
-  submit(){
-
-    console.log(this.firstFormGroup.value);
-    console.log(this.secondFormGroup.value);
-
-}
+  public onClickSubmit(): void {
+  }
 
 }
