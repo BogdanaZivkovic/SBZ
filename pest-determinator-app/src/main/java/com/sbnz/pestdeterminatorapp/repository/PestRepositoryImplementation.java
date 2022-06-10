@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.sbnz.pestdeterminatorapp.model.Characteristic;
 import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
 import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
 import com.sbnz.pestdeterminatorapp.model.Pest;
@@ -46,16 +45,13 @@ public class PestRepositoryImplementation implements PestRepository{
 		p2.setSymptoms(symptoms2);
 		
 		List<Symptom> symptoms3 = new LinkedList<>();
+		symptoms3.add(Symptom.GRAY_GREEN_CATERPILLAR_WITH_BACK_STRIPES);
 		symptoms3.add(Symptom.OPENINGS_ON_FRUIT_WALLS);
 		symptoms3.add(Symptom.FUNGUS_ON_FRUIT);
 		symptoms3.add(Symptom.FRUIT_ROT_AND_DECAY);
+		symptoms3.add(Symptom.BUTTERFLY_GRAY_FRONT_YELLOWISH_BACK_WINGS);
 		symptoms3.add(Symptom.BUTTERFLY_FROM_MAY_TO_SEPTEMBER);
 		p3.setSymptoms(symptoms3);
-		
-		List<Characteristic> characteristics3 = new LinkedList<>();
-		characteristics3.add(Characteristic.GRAY_GREEN_CATERPILLAR_WITH_BACK_STRIPES);
-		characteristics3.add(Characteristic.BUTTERFLY_GRAY_FRONT_YELLOWISH_BACK_WINGS);
-		p3.setCharacteristics(characteristics3);
 		
 		List<Symptom> symptoms4 = new LinkedList<>();
 		symptoms4.add(Symptom.WHITE_SPOTS);
@@ -72,51 +68,36 @@ public class PestRepositoryImplementation implements PestRepository{
 		p5.setSymptoms(symptoms5);
 		
 		List<Symptom> symptoms6 = new LinkedList<>();
+		symptoms6.add(Symptom.OVAL_YELLOW_BODY_WITH_BLACK_STRIPES);
+		symptoms6.add(Symptom.ORANGE_EGGS);
+		symptoms6.add(Symptom.REDDISH_LARVA_WITH_BLACK_HEAD);
 		symptoms6.add(Symptom.EATEN_LEAVES);
 		p6.setSymptoms(symptoms6);
 		
-		List<Characteristic> characteristics6 = new LinkedList<>();
-		characteristics6.add(Characteristic.OVAL_YELLOW_BODY_WITH_BLACK_STRIPES);
-		characteristics6.add(Characteristic.ORANGE_EGGS);
-		characteristics6.add(Characteristic.REDDISH_LARVA_WITH_BLACK_HEAD);
-		p6.setCharacteristics(characteristics6);
-		
 		List<Symptom> symptoms7 = new LinkedList<>();
+		symptoms7.add(Symptom.PALE_BROWN_PUPA);
+		symptoms7.add(Symptom.GRAY_GREEN_CATERPILLAR_WITH_YELLOW_SIDE_STRIPES);
 		symptoms7.add(Symptom.COBWEBS);
 		symptoms7.add(Symptom.EATEN_LEAVES);
 		p7.setSymptoms(symptoms7);
-		
-		List<Characteristic> characteristics7 = new LinkedList<>();
-		characteristics7.add(Characteristic.PALE_BROWN_PUPA);
-		characteristics7.add(Characteristic.GRAY_GREEN_CATERPILLAR_WITH_YELLOW_SIDE_STRIPES);
-		p7.setCharacteristics(characteristics7);
 		
 		List<Symptom> symptoms8 = new LinkedList<>();
 		symptoms8.add(Symptom.PEACH_WINTER_HOST);
 		symptoms8.add(Symptom.HONEYDEW);
 		symptoms8.add(Symptom.SOOT);
+		symptoms8.add(Symptom.WINGLESS_OVAL_LICE_REDDISH_GREEN_YELLOWISH);
 		p8.setSymptoms(symptoms8);
-		
-		List<Characteristic> characteristics8 = new LinkedList<>();
-		characteristics8.add(Characteristic.WINGLESS_OVAL_LICE_REDDISH_GREEN_YELLOWISH);
-		p8.setCharacteristics(characteristics8);
 		
 		List<Symptom> symptoms9 = new LinkedList<>();
 		symptoms9.add(Symptom.CORRIDORS_IN_HUMUS_SOIL);
+		symptoms9.add(Symptom.ELONGATED_BROWN_BODY_WITH_MOLELIKE_LEGS);
 		p9.setSymptoms(symptoms9);
-		
-		List<Characteristic> characteristics9 = new LinkedList<>();
-		characteristics9.add(Characteristic.ELONGATED_BROWN_BODY_WITH_MOLELIKE_LEGS);
-		p9.setCharacteristics(characteristics9);
 		
 		List<Symptom> symptoms10 = new LinkedList<>();
 		symptoms10.add(Symptom.DENSE_COLONIES);
 		symptoms10.add(Symptom.CUCUMBER_MOSAIC_VIRUS);
+		symptoms10.add(Symptom.LIGHTGREEN_WINGLESS_LICE);
 		p10.setSymptoms(symptoms10);
-		
-		List<Characteristic> characteristics10 = new LinkedList<>();
-		characteristics10.add(Characteristic.LIGHTGREEN_WINGLESS_LICE);
-		p10.setCharacteristics(characteristics10);
 		
 		List<Symptom> symptoms11 = new LinkedList<>();
 		symptoms11.add(Symptom.LEAVES_YELLOW_CURLING_ALONG_EDGES);
@@ -124,23 +105,17 @@ public class PestRepositoryImplementation implements PestRepository{
 		symptoms11.add(Symptom.THE_FRUIT_SKIN_ROUGH_AND_CRACKS);
 		symptoms11.add(Symptom.FRUIT_DOES_NOT_GROW_AND_DECAY);
 		symptoms11.add(Symptom.FIRST_DAMAGES_TO_THE_LOWER_PARTS);
+		symptoms11.add(Symptom.INSECT_NOT_VISIBLE);
 		p11.setSymptoms(symptoms11);
-		
-		List<Characteristic> characteristics11 = new LinkedList<>();
-		characteristics11.add(Characteristic.INSECT_NOT_VISIBLE);
-		p11.setCharacteristics(characteristics11);
 		
 		List<Symptom> symptoms12 = new LinkedList<>();
 		symptoms12.add(Symptom.BUTTERFLY_FROM_APRIL_TO_OCTOBER);
 		symptoms12.add(Symptom.MINES_BELOW_SURFACE);
+		symptoms12.add(Symptom.GRAYISH_WHITE_CATERPILLAR_WITH_BROWN_HEAD);
+		symptoms12.add(Symptom.PALE_BROWN_PUPA);
+		symptoms12.add(Symptom.SILK_COCOON);
+		symptoms12.add(Symptom.BUTTERFLY_BROWNISH_FRONT_WINGS_WITH_THREE_BLACK_SPOTS_BACK_WITH_FRINGE);
 		p12.setSymptoms(symptoms12);
-		
-		List<Characteristic> characteristics12 = new LinkedList<>();
-		characteristics12.add(Characteristic.GRAYISH_WHITE_CATERPILLAR_WITH_BROWN_HEAD);
-		characteristics12.add(Characteristic.PALE_BROWN_PUPA);
-		characteristics12.add(Characteristic.SILK_COCOON);
-		characteristics12.add(Characteristic.BUTTERFLY_BROWNISH_FRONT_WINGS_WITH_THREE_BLACK_SPOTS_BACK_WITH_FRINGE);
-		p12.setCharacteristics(characteristics12);
 				
 		List<PlantSpecies> plantSpecies1 = new LinkedList<>();
 		plantSpecies1.add(PlantSpecies.Cucumber);

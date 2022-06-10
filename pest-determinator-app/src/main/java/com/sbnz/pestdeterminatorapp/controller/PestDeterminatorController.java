@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbnz.pestdeterminatorapp.service.PestDeterminatorService;
-import com.sbnz.pestdeterminatorapp.dto.ControlMeasureInputDTO;
 import com.sbnz.pestdeterminatorapp.dto.DeterminationInputDTO;
+import com.sbnz.pestdeterminatorapp.model.Plant;
 import com.sbnz.pestdeterminatorapp.model.Symptom;
 
 @RestController
@@ -28,18 +28,12 @@ public class PestDeterminatorController {
 	private PestDeterminatorService pestDeterminatorService;
 	
 	@CrossOrigin(origins = "http://localhost:4200")
-	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public void getPest(@RequestBody DeterminationInputDTO dto) {
+	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<Plant> getPest(@RequestBody DeterminationInputDTO dto) {
 
-		pestDeterminatorService.determinePest(dto);
-
-	}
-	
-	@CrossOrigin(origins = "http://localhost:4200")
-	@RequestMapping(value = "/control", method = RequestMethod.GET, produces = "application/json")
-	public void getDiagnosis(@RequestBody ControlMeasureInputDTO dto) {
-
-		pestDeterminatorService.getDiagnosis(dto);
+		Plant plant = pestDeterminatorService.determinePest(dto);
+		
+		return new ResponseEntity<>(plant, HttpStatus.OK);
 
 	}
 	
@@ -48,5 +42,11 @@ public class PestDeterminatorController {
 	public ResponseEntity<Collection<Symptom>> getSymptoms() {
 
 		return new ResponseEntity<>(pestDeterminatorService.getSymptoms(), HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(value = "/report", method = RequestMethod.GET, produces = "application/json")
+	public void getReport() {
+		pestDeterminatorService.getReport();
 	}
 }

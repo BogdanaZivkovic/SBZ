@@ -1,7 +1,6 @@
 package com.sbnz.pestdeterminatorapp.repository;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -18,29 +17,31 @@ public class PlantRepositoryImplementation implements PlantRepository {
 	
 	public PlantRepositoryImplementation() {
 		
-		List<Symptom> symptoms1 = new LinkedList<>();
+		List<Symptom> symptoms1 = new ArrayList<>();
 		symptoms1.add(Symptom.WHITE_SPOTS);
 		symptoms1.add(Symptom.INDOORS);
 		symptoms1.add(Symptom.WHITE_MINES);
 		
-		List<Symptom> symptoms2 = new LinkedList<>();
+		List<Symptom> symptoms2 = new ArrayList<>();
 		symptoms2.add(Symptom.WHITE_SPOTS);
 		symptoms2.add(Symptom.DRIED_LEAVES);
 		symptoms2.add(Symptom.TOMATO_MOSAIC_VIRUS);
 		
-		List<Symptom> symptoms3 = new LinkedList<>();
+		List<Symptom> symptoms3 = new ArrayList<>();
 		symptoms3.add(Symptom.EATEN_LEAVES);
 		
-		List<PlantPart> plantParts = new LinkedList<>();
+		List<PlantPart> plantParts = new ArrayList<>();
 		plantParts.add(PlantPart.Leaf);
 		
-		Plant p1 = new Plant(1L, "student", null, null, symptoms1, null, plantParts, PlantSpecies.Cucumber);
-		Plant p2 = new Plant(2L, "student", null, null, symptoms2, null, plantParts, PlantSpecies.Tomato);
-		Plant p3 = new Plant(3L, "student", null, null, symptoms3, null, plantParts, PlantSpecies.Potato);
+		Plant p1 = new Plant(1L, "student", null, new ArrayList<>(), symptoms1, plantParts, PlantSpecies.Cucumber);
+		Plant p2 = new Plant(2L, "student", null, new ArrayList<>(), symptoms2, plantParts, PlantSpecies.Tomato);
+		Plant p3 = new Plant(3L, "student", null, new ArrayList<>(), symptoms3, plantParts, PlantSpecies.Potato);
+		Plant p4 = new Plant(4L, "student", null, new ArrayList<>(), null, plantParts, PlantSpecies.Tomato);
 		
 		plants.add(p1);
 		plants.add(p2);
 		plants.add(p3);
+		plants.add(p4);
 		
 	}
 
@@ -54,6 +55,17 @@ public class PlantRepositoryImplementation implements PlantRepository {
 		for (Plant plant : plants) {
 			if(plant.getId().equals(id)) {
 				return plant;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Plant update(Plant plant) {
+		for (Plant p : plants) {
+			if(p.getId().equals(plant.getId())) {
+				p = plant;
+				return p;
 			}
 		}
 		return null;

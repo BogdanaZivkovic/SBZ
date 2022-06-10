@@ -7,18 +7,22 @@ import com.sbnz.pestdeterminatorapp.model.Symptom;
 import com.sbnz.pestdeterminatorapp.model.Pest;
 import com.sbnz.pestdeterminatorapp.model.PlantPart;
 import com.sbnz.pestdeterminatorapp.model.PlantSpecies;
+import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
+import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
+import com.sbnz.pestdeterminatorapp.model.Diagnosis;
 
 //declare any global variables here
 
 
 rule "Potential pest determination"
+	salience((100*$value) / $symptoms.size())
     when
         $p: Pest($name: name, $symptoms: symptoms, $plantSpecies: plantSpecies, $plantParts: plantParts)
         $pl: Plant(currentPest == null, $registeredSymptoms: symptoms, $pestHistory : pestHistory, $affectedParts : affectedParts, plantSpecies memberOf $plantSpecies)
         
         forall(PlantPart($affectedParts.contains(this)) from $plantParts)
         
-        Number($value : intValue >= 1) from accumulate (
+        Number($value : intValue >= 2) from accumulate (
             Symptom($t:this, this memberOf $symptoms) from $registeredSymptoms,
         	count($t)       
         )
@@ -26,17 +30,20 @@ rule "Potential pest determination"
     then
         System.out.println("Pest: " + $name);
     	System.out.println("Number of symptoms registered: " + $value + "/" + $symptoms.size());
-    	modify($pl) { addPotentialPest($p) }
-    	delete($p)
+    	modify($pl) { setCurrentPest($p) };
 end
 
-//rule "Pest determination"
-//	when
-//		$pl: Plant(currentPest == null, potentialPests!= null, $registeredCharacteristics: characteristics)
-//		Number(intValue > 0) from accumulate (
-//			Pest(
-//			max(
-//		)
-//	then
-//end
+
+rule "Control measure selection"
+no-loop true
+    when
+    	$plant: Plant($pest: currentPest != null)
+        $cmt : ControlMeasureType()
+        $c: ControlMeasure(type == $cmt) from $pest.getControlMeasures()    
+    then
+    	System.out.println("Control measure type: " + $cmt);
+        System.out.println("Appropriate control measure: " + $c.getName());
+        Diagnosis diagnosis = new Diagnosis($pest, $c);
+        modify($plant) { addDiagnosis(diagnosis) };
+end
 

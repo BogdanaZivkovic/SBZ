@@ -1,0 +1,26 @@
+//created on: 10.06.2022.
+package rules
+
+//list any import classes here.
+import com.sbnz.pestdeterminatorapp.model.Plant;
+import com.sbnz.pestdeterminatorapp.model.Symptom;
+import com.sbnz.pestdeterminatorapp.model.Pest;
+import com.sbnz.pestdeterminatorapp.model.PlantPart;
+import com.sbnz.pestdeterminatorapp.model.PlantSpecies;
+import com.sbnz.pestdeterminatorapp.model.Diagnosis;
+import java.time.LocalDateTime;
+
+//declare any global variables here
+
+
+rule "Pest report"
+	when
+        $plant: Plant($pestHistory: pestHistory)
+        $diagnosis: Diagnosis($pest: Pest) from $pestHistory
+        Number ($value: intValue > 3) from accumulate(
+         	$d: Diagnosis(pest.getName() == $pest.getName(), $date: date.isAfter(LocalDateTime.now().minusMonths(12)), $controlMeasure: controlMeasure) from $pestHistory,
+         	count($d)
+         )
+    then
+        System.out.println("Nemoguce uzgojiti ");
+end

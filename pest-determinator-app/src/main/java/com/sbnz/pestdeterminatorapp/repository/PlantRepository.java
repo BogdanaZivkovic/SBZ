@@ -9,4 +9,6 @@ public interface PlantRepository {
 	public Plant findById(long id);
 
 	public List<Plant> findAll();
+	
+	public Plant update(Plant plant);
 }

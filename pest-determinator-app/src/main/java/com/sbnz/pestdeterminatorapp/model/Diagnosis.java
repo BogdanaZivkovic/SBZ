@@ -8,6 +8,15 @@ public class Diagnosis {
 	private Pest pest;
 	private ControlMeasure controlMeasure;
 	
+	public Diagnosis() {}
+	
+	public Diagnosis(Pest pest, ControlMeasure controlMeasure) {
+		super();
+		this.date = LocalDateTime.now();
+		this.pest = pest;
+		this.controlMeasure = controlMeasure;
+	}
+	
 	public LocalDateTime getDate() {
 		return date;
 	}

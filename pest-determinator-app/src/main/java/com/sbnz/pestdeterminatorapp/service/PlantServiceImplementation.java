@@ -36,6 +36,12 @@ public class PlantServiceImplementation implements PlantService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Plant update(Plant plant) {
+		
+		return plantRepository.update(plant);
+	}
 
 	@Override
 	public void deleteById(long id) {

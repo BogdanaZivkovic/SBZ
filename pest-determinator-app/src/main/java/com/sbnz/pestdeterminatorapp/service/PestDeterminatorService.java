@@ -10,15 +10,13 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sbnz.pestdeterminatorapp.dto.ControlMeasureInputDTO;
 import com.sbnz.pestdeterminatorapp.dto.DeterminationInputDTO;
-import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
 import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
 import com.sbnz.pestdeterminatorapp.model.Pest;
 import com.sbnz.pestdeterminatorapp.model.Plant;
 import com.sbnz.pestdeterminatorapp.model.Symptom;
-import com.sbnz.pestdeterminatorapp.repository.ControlMeasureRepositoryImplementation;
-import com.sbnz.pestdeterminatorapp.repository.PestRepositoryImplementation;
+import com.sbnz.pestdeterminatorapp.repository.PestRepository;
+import com.sbnz.pestdeterminatorapp.service.serviceInterface.PlantService;
 
 @Service
 public class PestDeterminatorService {
@@ -26,10 +24,14 @@ public class PestDeterminatorService {
 	@Autowired
 	private KieContainer kieContainer;
 	
-	private final PestRepositoryImplementation pestRepository = new PestRepositoryImplementation();
-	private final ControlMeasureRepositoryImplementation controlMeasureRepository = new ControlMeasureRepositoryImplementation();
+	@Autowired
+	private PestRepository pestRepository;
 	
-	public void determinePest(DeterminationInputDTO dto) {
+	@Autowired
+	private PlantService plantService;
+	
+	
+	public Plant determinePest(DeterminationInputDTO dto) {
 		KieSession kieSession = kieContainer.newKieSession();
 		
 		List<Pest> pests = pestRepository.findAll();
@@ -38,37 +40,33 @@ public class PestDeterminatorService {
 			kieSession.insert(pest);
 		}
 		
-		Plant plant = new Plant();
-		plant.setId(1L);
-		plant.setAffectedParts(dto.getAffectedParts());
+		Plant plant = plantService.findById(4L);
 		plant.setCurrentPest(null);
+		plant.setAffectedParts(dto.getAffectedParts());
 		plant.setPlantSpecies(dto.getPlantSpecies());
-		plant.setSymptoms(dto.getSymptoms());
-		plant.setUser("Boba");
-		plant.setPotentialPests(new ArrayList<>());
-		
+		plant.setSymptoms(dto.getSymptoms());	
 		kieSession.insert(plant);
-		
-		kieSession.fireAllRules();
-	}
-	
-	public void getDiagnosis(ControlMeasureInputDTO dto) {
-		KieSession kieSession = kieContainer.newKieSession();
-		
-		List<ControlMeasure> controlMeasures = controlMeasureRepository.findAll();
-		
-		for(ControlMeasure controlMeasure : controlMeasures) {
-			kieSession.insert(controlMeasure);
-		}
-		
-		Pest pest = pestRepository.findByName(dto.getPest());
-		kieSession.insert(pest);
 		
 		ControlMeasureType type = dto.getControlMeasureType();	
 		kieSession.insert(type);
 		
 		kieSession.fireAllRules();
 		
+		plantService.update(plant);
+		
+		return plant;
+	}
+	
+	public void getReport() {
+		KieSession kieSession = kieContainer.newKieSession();
+		
+		List<Plant> plants = plantService.findAll();
+		
+		for(Plant plant : plants) {
+			kieSession.insert(plant);
+		}
+		
+		kieSession.fireAllRules();
 	}
 	
 	public Collection<Symptom> getSymptoms() {
