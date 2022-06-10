@@ -45,6 +45,7 @@ public class PestDeterminatorService {
 		plant.setPlantSpecies(dto.getPlantSpecies());
 		plant.setSymptoms(dto.getSymptoms());
 		plant.setUser("Boba");
+		plant.setPotentialPests(new ArrayList<>());
 		
 		kieSession.insert(plant);
 		

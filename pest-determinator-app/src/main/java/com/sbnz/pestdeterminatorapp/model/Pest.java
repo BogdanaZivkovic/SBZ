@@ -7,6 +7,7 @@ public class Pest {
 	
 	private String name;
 	private List<Symptom> symptoms;
+	private List<Characteristic> characteristics;
 	private List<PlantSpecies> plantSpecies;
 	private List<PlantPart> plantParts;
 	private List<ControlMeasure> controlMeasures;
@@ -15,6 +16,7 @@ public class Pest {
 		super();
 		this.name = name;
 		this.symptoms = new ArrayList<Symptom>();
+		this.characteristics = new ArrayList<Characteristic>();
 		this.plantSpecies = new ArrayList<PlantSpecies>();
 		this.plantParts = new ArrayList<PlantPart>();
 		this.controlMeasures = new ArrayList<ControlMeasure>();
@@ -55,6 +57,13 @@ public class Pest {
 
 	public void setControlMeasures(List<ControlMeasure> controlMeasures) {
 		this.controlMeasures = controlMeasures;
-	}	
+	}
 
+	public List<Characteristic> getCharacteristics() {
+		return characteristics;
+	}
+
+	public void setCharacteristics(List<Characteristic> characteristics) {
+		this.characteristics = characteristics;
+	}	
 }

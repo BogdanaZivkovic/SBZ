@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { PlantInput } from '../model/plantInput';
-import { DeterminationFormService } from './determination-form.service';
+import { DeterminationService } from '../service/determination.service';
 
 @Component({
   selector: 'app-determination-form',
@@ -23,7 +22,7 @@ export class DeterminationFormComponent implements OnInit {
 
   public readonly determinationForm: FormGroup;
   
-  constructor(private determinationFormService: DeterminationFormService, private formBuilder: FormBuilder) { 
+  constructor(private determinationService: DeterminationService, private formBuilder: FormBuilder) { 
     this.determinationForm = this.formBuilder.group({
       plant: ['', Validators.required],
       selectedPlantParts: new FormArray([]),
@@ -37,14 +36,14 @@ export class DeterminationFormComponent implements OnInit {
   }
 
   getUserPlants() {
-    this.determinationFormService.getUserPlants().subscribe({
+    this.determinationService.getUserPlants().subscribe({
       next: plants => this.plants = plants,
       error: err => this.errorMessage = err
     })
   }
 
   getSymptoms() {
-    this.determinationFormService.getSymptoms().subscribe({
+    this.determinationService.getSymptoms().subscribe({
       next: symptoms => this.symptoms = symptoms,
       error: err => this.errorMessage = err
     })
@@ -73,6 +72,6 @@ export class DeterminationFormComponent implements OnInit {
   }
 
   public onClickSubmit(): void {
-    this.determinationFormService.determinePest().subscribe();
+    this.determinationService.determinePest().subscribe();
   }
 }

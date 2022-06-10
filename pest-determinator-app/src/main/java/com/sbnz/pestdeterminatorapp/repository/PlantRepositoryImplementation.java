@@ -29,16 +29,14 @@ public class PlantRepositoryImplementation implements PlantRepository {
 		symptoms2.add(Symptom.TOMATO_MOSAIC_VIRUS);
 		
 		List<Symptom> symptoms3 = new LinkedList<>();
-		symptoms3.add(Symptom.OVAL_YELLOW_BODY_WITH_BLACK_STRIPES);
-		symptoms3.add(Symptom.ORANGE_EGGS);
-		symptoms3.add(Symptom.REDDISH_LARVA_WITH_BLACK_HEAD);
+		symptoms3.add(Symptom.EATEN_LEAVES);
 		
 		List<PlantPart> plantParts = new LinkedList<>();
 		plantParts.add(PlantPart.Leaf);
 		
-		Plant p1 = new Plant(1L, "student", null, null, symptoms1, plantParts, PlantSpecies.Cucumber);
-		Plant p2 = new Plant(2L, "student", null, null, symptoms2, plantParts, PlantSpecies.Tomato);
-		Plant p3 = new Plant(3L, "student", null, null, symptoms3, plantParts, PlantSpecies.Potato);
+		Plant p1 = new Plant(1L, "student", null, null, symptoms1, null, plantParts, PlantSpecies.Cucumber);
+		Plant p2 = new Plant(2L, "student", null, null, symptoms2, null, plantParts, PlantSpecies.Tomato);
+		Plant p3 = new Plant(3L, "student", null, null, symptoms3, null, plantParts, PlantSpecies.Potato);
 		
 		plants.add(p1);
 		plants.add(p2);

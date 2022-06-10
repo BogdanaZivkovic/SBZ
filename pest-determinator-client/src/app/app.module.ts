@@ -12,13 +12,15 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatListModule} from '@angular/material/list';
 import {NavigationComponent } from './navigation/navigation.component';
+import {LoginComponent } from './login/login.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     DeterminationFormComponent,
-    NavigationComponent
+    NavigationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

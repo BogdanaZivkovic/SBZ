@@ -1,14 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DeterminationFormService {
+export class DeterminationService {
 
   constructor(private http: HttpClient) { }
-
+  
   getSymptoms(): Observable<any> {
     return this.http.get<any>('http://localhost:8080/determination/symptoms');
   }
@@ -20,4 +20,6 @@ export class DeterminationFormService {
   determinePest(): Observable<any> {
     return this.http.get<any> ('http://localhost:8080/determination');
   }
+
 }
+
