@@ -1,6 +1,7 @@
 package com.sbnz.pestdeterminatorapp.controller;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,19 @@ public class PestDeterminatorController {
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(value = "/report", method = RequestMethod.GET, produces = "application/json")
-	public void getReport() {
-		pestDeterminatorService.getReport();
+	public ResponseEntity<Collection<Plant>> getReport() {
+		
+		List<Plant> plants = pestDeterminatorService.getReport();
+		
+		return new ResponseEntity<>(plants, HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(value = "/unusedControlMeasure", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Collection<Plant>> getUnusedControlMeasure() {
+		
+		List<Plant> plants = pestDeterminatorService.getUnusedControlMeasure();
+		
+		return new ResponseEntity<>(plants, HttpStatus.OK);
 	}
 }

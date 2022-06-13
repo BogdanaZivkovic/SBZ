@@ -9,18 +9,56 @@ import com.sbnz.pestdeterminatorapp.model.PlantPart;
 import com.sbnz.pestdeterminatorapp.model.PlantSpecies;
 import com.sbnz.pestdeterminatorapp.model.Diagnosis;
 import java.time.LocalDateTime;
+import java.util.List;
 
 //declare any global variables here
 
 
 rule "Pest report"
+agenda-group "report"
 	when
         $plant: Plant($pestHistory: pestHistory)
-        $diagnosis: Diagnosis($pest: Pest) from $pestHistory
-        Number ($value: intValue > 3) from accumulate(
-         	$d: Diagnosis(pest.getName() == $pest.getName(), $date: date.isAfter(LocalDateTime.now().minusMonths(12)), $controlMeasure: controlMeasure) from $pestHistory,
-         	count($d)
+        $collectedPlants: List()
+        $diagnosis: Diagnosis($pest: pest, $controlMeasure: controlMeasure) from $pestHistory
+        not Plant(id == $plant.getId()) from $collectedPlants
+             
+        $cm1: ControlMeasure() from $pest.getControlMeasures()
+        $cm2: ControlMeasure(name != $cm1.getName()) from $pest.getControlMeasures()
+        $cm3: ControlMeasure(name != $cm1.getName(), name != $cm2.getName()) from $pest.getControlMeasures()
+        
+        $diagnosisList: List (size > 3) from accumulate(
+         	$d: Diagnosis(pest.getName() == $pest.getName(), $date: date.isAfter(LocalDateTime.now().minusMonths(12))) from $pestHistory,
+         	collectList($d)
          )
+
+		$d1: Diagnosis(controlMeasure.getName() == $cm1.getName()) from $diagnosisList
+		$d2: Diagnosis(controlMeasure.getName() == $cm2.getName()) from $diagnosisList
+		$d3: Diagnosis(controlMeasure.getName() == $cm3.getName()) from $diagnosisList
+		
     then
-        System.out.println("Nemoguce uzgojiti ");
+    	modify($collectedPlants) { add($plant) };
+        System.out.println("Unable to cultivate");
+end
+
+rule "Pest report change control measure"
+agenda-group "report change control measure"
+	when
+        $plant: Plant($pestHistory: pestHistory)
+        $collectedPlants: List()
+        $diagnosis: Diagnosis($pest: pest, $controlMeasure: controlMeasure) from $pestHistory
+        not Plant(id == $plant.getId()) from $collectedPlants
+             
+        $cm: ControlMeasure() from $pest.getControlMeasures()
+        
+        $diagnosisList: List (size > 2) from accumulate(
+         	$d: Diagnosis(pest.getName() == $pest.getName(), $date: date.isAfter(LocalDateTime.now().minusMonths(6))) from $pestHistory,
+         	collectList($d)
+         )
+
+		not $d1: Diagnosis(controlMeasure.getName() == $cm.getName()) from $diagnosisList
+		
+    then
+    	modify($collectedPlants) { add($plant) };
+        System.out.println("Control measure to implement: " + $cm.getName());
+        System.out.println("Type: " + $cm.getType());
 end

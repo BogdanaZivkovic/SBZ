@@ -57,7 +57,7 @@ public class PestDeterminatorService {
 		return plant;
 	}
 	
-	public void getReport() {
+	public List<Plant> getReport() {
 		KieSession kieSession = kieContainer.newKieSession();
 		
 		List<Plant> plants = plantService.findAll();
@@ -66,7 +66,33 @@ public class PestDeterminatorService {
 			kieSession.insert(plant);
 		}
 		
+		List<Plant> collectedPlants = new ArrayList<>();
+		kieSession.insert(collectedPlants);
+		
+		kieSession.getAgenda().getAgendaGroup("report").setFocus();
+		
 		kieSession.fireAllRules();
+		
+		return collectedPlants;
+	}
+	
+	public List<Plant> getUnusedControlMeasure() {
+		KieSession kieSession = kieContainer.newKieSession();
+		
+		List<Plant> plants = plantService.findAll();
+		
+		for(Plant plant : plants) {
+			kieSession.insert(plant);
+		}
+		
+		List<Plant> collectedPlants = new ArrayList<>();
+		kieSession.insert(collectedPlants);
+		
+		kieSession.getAgenda().getAgendaGroup("report change control measure").setFocus();
+		
+		kieSession.fireAllRules();
+		
+		return collectedPlants;
 	}
 	
 	public Collection<Symptom> getSymptoms() {
