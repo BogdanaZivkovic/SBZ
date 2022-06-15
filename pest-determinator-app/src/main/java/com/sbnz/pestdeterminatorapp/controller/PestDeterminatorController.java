@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sbnz.pestdeterminatorapp.service.PestDeterminatorService;
 import com.sbnz.pestdeterminatorapp.dto.DeterminationInputDTO;
+import com.sbnz.pestdeterminatorapp.model.Pest;
 import com.sbnz.pestdeterminatorapp.model.Plant;
 import com.sbnz.pestdeterminatorapp.model.Symptom;
 
@@ -61,5 +62,14 @@ public class PestDeterminatorController {
 		List<Plant> plants = pestDeterminatorService.getUnusedControlMeasure();
 		
 		return new ResponseEntity<>(plants, HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(value = "/pestSuspect", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Collection<Pest>> pestSuspect() {
+		
+		List<Pest> pests = pestDeterminatorService.pestSuspect();
+		
+		return new ResponseEntity<>(pests,HttpStatus.OK);
 	}
 }

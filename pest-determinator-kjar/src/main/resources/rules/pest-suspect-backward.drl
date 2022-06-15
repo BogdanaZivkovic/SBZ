@@ -1,0 +1,69 @@
+//created on: 13.06.2022.
+package rules
+
+//list any import classes here.
+
+import com.sbnz.pestdeterminatorapp.model.Plant;
+import com.sbnz.pestdeterminatorapp.model.Symptom;
+import com.sbnz.pestdeterminatorapp.model.Pest;
+import com.sbnz.pestdeterminatorapp.model.PlantPart;
+import com.sbnz.pestdeterminatorapp.model.PlantSpecies;
+import com.sbnz.pestdeterminatorapp.model.Diagnosis;
+import java.util.List;
+
+//declare any global variables here
+
+
+query pestSuspectFound(Pest $pest, Plant $plant)
+
+ 	$pest:= Pest ($name: name) and
+    $plant:= Plant($currentPest: currentPest, $name != $currentPest.getName(), $plantSpecies: plantSpecies) and
+    controlMeasuresNotOverlapping($pest, $currentPest; ) and
+    attacksSameSpecies($pest, $plantSpecies; ) and
+    attacksSamePlantPart($pest, $plant; ) and
+    matchesSymptoms($pest, $plant;)
+ 
+end
+
+query controlMeasuresNotOverlapping(Pest $pest, Pest $determinedPest)
+    $controlMeasure: ControlMeasure() from $pest.getControlMeasures()
+    $controlMeasureUsed: ControlMeasure(name != $controlMeasure.getName()) from $determinedPest.getControlMeasures()
+end
+
+query attacksSameSpecies(Pest $pest, PlantSpecies $plantSpecies)
+	$pestPlantSpecies: PlantSpecies(this == $plantSpecies) from $pest.getPlantSpecies()
+end
+
+query attacksSamePlantPart(Pest $pest, Plant $plant)
+ 	PlantPart($plant.getAffectedParts().contains(this)) from $pest.getPlantParts()
+end
+
+query matchesSymptoms(Pest $pest, Plant $plant)
+	similarToPreviouslyDeterminedPest($pest, $plant.getCurrentPest(); ) or
+    similarToPlantCurrentSymptoms($pest, $plant; ) 
+end
+
+query similarToPreviouslyDeterminedPest(Pest $pest, Pest $determinedPest)
+    Number(intValue >= 2) from accumulate (
+            Symptom($t:this, this memberOf $pest.getSymptoms()) from $determinedPest.getSymptoms(),
+        	count($t)       
+        )
+end
+
+query similarToPlantCurrentSymptoms(Pest $pest, Plant $plant)    
+    Number(intValue >= 2) from accumulate (
+            Symptom($t:this, this memberOf $pest.getSymptoms()) from $plant.getSymptoms(),
+        	count($t)       
+        )
+end 
+
+rule "Other pest suspect"
+agenda-group "test"
+	when	
+		$pestSuspects: List()
+	    pestSuspectFound($pest, $plant; )
+	    not Pest(name == $pest.getName()) from $pestSuspects
+	then
+		modify($pestSuspects) { add($pest) };
+	    System.out.println("Pest " + $pest.getName() + " could be the actual pest for plant");
+end

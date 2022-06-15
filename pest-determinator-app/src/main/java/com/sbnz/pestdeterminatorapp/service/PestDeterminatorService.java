@@ -95,6 +95,29 @@ public class PestDeterminatorService {
 		return collectedPlants;
 	}
 	
+	public List<Pest> pestSuspect() {
+		KieSession kieSession = kieContainer.newKieSession();
+		
+		Plant plant = plantService.findById(4L);
+
+		kieSession.insert(plant);
+		
+		List<Pest> pests = pestRepository.findAll();
+		
+		for(Pest pest : pests) {
+			kieSession.insert(pest);
+		}
+		
+		List<Pest> pestSuspects = new ArrayList<>();
+		kieSession.insert(pestSuspects);
+		
+		kieSession.getAgenda().getAgendaGroup("test").setFocus();
+		
+		kieSession.fireAllRules();
+		
+		return pestSuspects;
+	}
+	
 	public Collection<Symptom> getSymptoms() {
 		List<Symptom> symptomsList = new ArrayList<Symptom>(EnumSet.allOf(Symptom.class));
 		return symptomsList;

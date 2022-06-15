@@ -41,6 +41,7 @@ public class PestRepositoryImplementation implements PestRepository{
 		symptoms2.add(Symptom.DRIED_LEAVES);
 		symptoms2.add(Symptom.SHALLOW_WELLS);
 		symptoms2.add(Symptom.WHITE_MINES);
+		symptoms2.add(Symptom.WHITE_SPOTS);
 		p2.setSymptoms(symptoms2);
 		
 		List<Symptom> symptoms3 = new ArrayList<>();
