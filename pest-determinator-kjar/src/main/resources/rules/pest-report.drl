@@ -47,7 +47,6 @@ no-loop true
         $plant: Plant($pestHistory: pestHistory, $reportSuggested: reportSuggested == true)
         $collectedControlMeasures: List()
         $diagnosis: Diagnosis($pest: pest, $controlMeasure: controlMeasure) from $pestHistory
-        //not Plant(id == $plant.getId()) from $collectedPlants
         $cm: ControlMeasure() from $pest.getControlMeasures()
         not ControlMeasure(name == $cm.getName()) from $collectedControlMeasures
         
