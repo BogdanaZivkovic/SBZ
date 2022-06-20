@@ -14,7 +14,8 @@ import com.sbnz.pestdeterminatorapp.model.Diagnosis;
 //declare any global variables here
 
 
-rule "Potential pest determination"
+rule "Pest determination"
+agenda-group "pest determination"
 	salience((100*$value) / $symptoms.size())
     when
         $p: Pest($name: name, $symptoms: symptoms, $plantSpecies: plantSpecies, $plantParts: plantParts)
@@ -31,13 +32,15 @@ rule "Potential pest determination"
         System.out.println("Pest: " + $name);
     	System.out.println("Number of symptoms registered: " + $value + "/" + $symptoms.size());
     	modify($pl) { setCurrentPest($p) };
+    	modify($pl) { setReportSuggested(false) };
 end
 
 
 rule "Control measure selection"
+agenda-group "pest determination"
 no-loop true
     when
-    	$plant: Plant($pest: currentPest != null)
+    	$plant: Plant($pest: currentPest != null, $reportSuggested: reportSuggested == false)
         $cmt : ControlMeasureType()
         $c: ControlMeasure(type == $cmt) from $pest.getControlMeasures()    
     then
@@ -45,5 +48,22 @@ no-loop true
         System.out.println("Appropriate control measure: " + $c.getName());
         Diagnosis diagnosis = new Diagnosis($pest, $c);
         modify($plant) { addDiagnosis(diagnosis) };
+        modify($plant) { setCurrentDiagnosis(diagnosis) };     
 end
 
+rule "Suggest report"
+agenda-group "pest determination"
+no-loop true
+	when 
+		$plant: Plant($currentDiagnosis: currentDiagnosis != null, $pestHistory: pestHistory) 
+
+		Number(intValue > 2) from accumulate (
+			Diagnosis($t:this, $pest: pest == $currentDiagnosis.getPest()) from $pestHistory,
+			count($t)
+		)
+
+	then
+		modify($plant) { setReportSuggested(true) };  
+		modify($plant) { setCurrentDiagnosis(null) };  
+		System.out.println("Suggesting creating a report");
+end

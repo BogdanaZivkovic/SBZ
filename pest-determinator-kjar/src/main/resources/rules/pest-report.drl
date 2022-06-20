@@ -41,14 +41,15 @@ agenda-group "report"
 end
 
 rule "Pest report change control measure"
-agenda-group "report change control measure"
+agenda-group "pest determination"
+no-loop true
 	when
-        $plant: Plant($pestHistory: pestHistory)
-        $collectedPlants: List()
+        $plant: Plant($pestHistory: pestHistory, $reportSuggested: reportSuggested == true)
+        $collectedControlMeasures: List()
         $diagnosis: Diagnosis($pest: pest, $controlMeasure: controlMeasure) from $pestHistory
-        not Plant(id == $plant.getId()) from $collectedPlants
-             
+        //not Plant(id == $plant.getId()) from $collectedPlants
         $cm: ControlMeasure() from $pest.getControlMeasures()
+        not ControlMeasure(name == $cm.getName()) from $collectedControlMeasures
         
         $diagnosisList: List (size > 2) from accumulate(
          	$d: Diagnosis(pest.getName() == $pest.getName(), $date: date.isAfter(LocalDateTime.now().minusMonths(6))) from $pestHistory,
@@ -58,7 +59,7 @@ agenda-group "report change control measure"
 		not $d1: Diagnosis(controlMeasure.getName() == $cm.getName()) from $diagnosisList
 		
     then
-    	modify($collectedPlants) { add($plant) };
-        System.out.println("Control measure to implement: " + $cm.getName());
+    	modify($collectedControlMeasures) { add($cm) };
+        System.out.println("Control measure to implement next: " + $cm.getName());
         System.out.println("Type: " + $cm.getType());
 end

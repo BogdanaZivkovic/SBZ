@@ -16,6 +16,15 @@ public class UserRepositoryImplementation implements UserRepository{
 		User u = new User();
 		u.setUsername("student");
 		u.setPassword("ftn");
+		
+		List<Long> plants = new ArrayList<>();
+		plants.add(1L);
+		plants.add(2L);
+		plants.add(3L);
+		plants.add(4L);
+		
+		u.setPlants(plants);
+		
 		users.add(u);
 	}
 	
@@ -26,6 +35,7 @@ public class UserRepositoryImplementation implements UserRepository{
 	public User findByUsername(String username) {
 		for(User user : users) {
 			if (user.getUsername().equals(username)) {
+				System.out.println(user.getUsername());
 				return user;
 			}
 		}

@@ -9,19 +9,22 @@ public class Plant {
 	private String user;
 	private Pest currentPest;
 	private List<Diagnosis> pestHistory = new ArrayList<>();
+	private Diagnosis currentDiagnosis;
 	private List<Symptom> symptoms = new ArrayList<>();
 	private List<PlantPart> affectedParts = new ArrayList<>();
 	private PlantSpecies plantSpecies;
+	private boolean reportSuggested = false;
 			
 	public Plant() {}
 		
-	public Plant(Long id, String user, Pest currentPest, List<Diagnosis> pestHistory, List<Symptom> symptoms,
+	public Plant(Long id, String user, Pest currentPest, List<Diagnosis> pestHistory, Diagnosis currentDiagnosis, List<Symptom> symptoms,
 			List<PlantPart> affectedParts, PlantSpecies plantSpecies) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.currentPest = currentPest;
 		this.pestHistory = pestHistory;
+		this.currentDiagnosis = currentDiagnosis;
 		this.symptoms = symptoms;
 		this.affectedParts = affectedParts;
 		this.plantSpecies = plantSpecies;
@@ -71,5 +74,21 @@ public class Plant {
 	}
 	public void setAffectedParts(List<PlantPart> affectedParts) {
 		this.affectedParts = affectedParts;
+	}
+
+	public Diagnosis getCurrentDiagnosis() {
+		return currentDiagnosis;
+	}
+
+	public void setCurrentDiagnosis(Diagnosis currentDiagnosis) {
+		this.currentDiagnosis = currentDiagnosis;
+	}
+
+	public boolean isReportSuggested() {
+		return reportSuggested;
+	}
+
+	public void setReportSuggested(boolean reportSuggested) {
+		this.reportSuggested = reportSuggested;
 	}	
 }

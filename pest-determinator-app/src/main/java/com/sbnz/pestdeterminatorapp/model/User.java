@@ -1,16 +1,18 @@
 package com.sbnz.pestdeterminatorapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
 	
 	private String username;
 	private String password;
-	private List<Plant> plants;	
+	private List<Long> plants = new ArrayList<>();
 	
-	public User() {}
+	public User() {
+	}
 	
-	public User(String username, String password, List<Plant> plants) {
+	public User(String username, String password, List<Long> plants) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -29,10 +31,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public List<Plant> getPlants() {
+	public List<Long> getPlants() {
 		return plants;
 	}
-	public void setPlants(List<Plant> plants) {
+	public void setPlants(List<Long> plants) {
 		this.plants = plants;
 	}
 }
