@@ -1,5 +1,6 @@
 package com.sbnz.pestdeterminatorapp.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sbnz.pestdeterminatorapp.model.Diagnosis;
@@ -15,7 +16,7 @@ public class PlantDTO {
 	private String user;
 	private Pest currentPest;
 	private List<Diagnosis> pestHistory;
-	private List<Symptom> symptoms;
+	private List<SymptomDTO> symptoms;
 	private List<PlantPart> affectedParts;
 	private PlantSpecies plantSpecies;
 	
@@ -26,12 +27,19 @@ public class PlantDTO {
 		this.user = plant.getUser();
 		this.currentPest = plant.getCurrentPest();
 		this.pestHistory = plant.getPestHistory();
-		this.symptoms = plant.getSymptoms();
+		this.symptoms = new ArrayList<>();
+		List<Symptom> symptomList = plant.getSymptoms();
+		if(symptomList!=null) {
+			for(Symptom symptom: symptomList) {
+				SymptomDTO symptomDTO = new SymptomDTO(symptom);
+				this.symptoms.add(symptomDTO);
+			}
+		}
 		this.affectedParts = plant.getAffectedParts();
 		this.plantSpecies = plant.getPlantSpecies();
 	}
 
-	public PlantDTO(Long id, String user, Pest currentPest, List<Diagnosis> pestHistory, List<Symptom> symptoms,
+	public PlantDTO(Long id, String user, Pest currentPest, List<Diagnosis> pestHistory, List<SymptomDTO> symptoms,
 			List<PlantPart> affectedParts, PlantSpecies plantSpecies) {
 		super();
 		this.id = id;
@@ -75,14 +83,6 @@ public class PlantDTO {
 		this.pestHistory = pestHistory;
 	}
 
-	public List<Symptom> getSymptoms() {
-		return symptoms;
-	}
-
-	public void setSymptoms(List<Symptom> symptoms) {
-		this.symptoms = symptoms;
-	}
-
 	public List<PlantPart> getAffectedParts() {
 		return affectedParts;
 	}
@@ -97,5 +97,13 @@ public class PlantDTO {
 
 	public void setPlantSpecies(PlantSpecies plantSpecies) {
 		this.plantSpecies = plantSpecies;
+	}
+
+	public List<SymptomDTO> getSymptoms() {
+		return symptoms;
+	}
+
+	public void setSymptoms(List<SymptomDTO> symptoms) {
+		this.symptoms = symptoms;
 	}
 }

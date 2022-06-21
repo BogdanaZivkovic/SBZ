@@ -2,32 +2,138 @@
     <div class="row justify-content-center">
       <div class="col-md-5">
         <h1 style="text-align: center;">Pest determination form</h1>
-        <ng-container [formGroup]="this.determinationForm">
+        <form #determinationForm="ngForm">
           <div class="mb-3 container-bg p-3">
             <label for="plant" class="form-label">Plant:</label>
-            <select id="plant" class="form-control" formControlName="plant" >
-                <option *ngFor="let plant of plants" [ngValue]="plant">#{{plant.id}}: {{plant.plantSpecies}} </option>
+            <select id="plant" class="form-control" name="plantSpecies" [(ngModel)]="plantSpecies" >
+                <option *ngFor="let plant of plants" [ngValue]="plant.plantSpecies">#{{plant.id}}: {{plant.plantSpecies}} </option>
             </select>
           </div>
           <div class="mb-3 container-bg p-3">
-            <label for="plantParts" class="form-label">Plant parts affected:</label>
-            <div *ngFor="let plantPart of plantParts; let i=index">
-              <input type="checkbox" formArrayName="selectedPlantParts" [value]="plantPart.value" (change)="onCheckboxChange($event)" />
-              {{plantPart.name}}
+            <div class="d-flex justify-content-between p-2">
+              <label for="plantParts" class="form-label">Plant parts affected:</label>
+              <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalDialogPlantPart">+</button>
             </div>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th style="width:70%"></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let plantPart of addedPlantParts">
+                  <td style="white-space:pre-wrap; word-wrap:break-word"> {{plantPart}}</td>
+                  <td><button class="btn btn-secondary" (click)="removePlantPart(plantPart)">-</button></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div class="mb-3 container-bg p-3">
-            <label for="symptoms" class="form-label">Symptoms:</label>
-            <div *ngFor="let symptom of symptoms; let i=index">
-              <input type="checkbox" formArrayName="selectedSymptoms" (change)="onSymptomCheckboxChange($event)" />
-              {{symptom}}
+            <div class="d-flex justify-content-between p-2">
+              <label for="symptoms" class="form-label">Symptoms:</label>
+              <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalDialog">+</button>
             </div>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th style="width:70%"></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let symptom of addedSymptoms">
+                  <td style="white-space:pre-wrap; word-wrap:break-word"> {{symptom.name}}</td>
+                  <td><button class="btn btn-secondary" (click)="removeSymptom(symptom)">-</button></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </ng-container>
-        <div class="d-grid col-6 mx-auto">
-        <button class="btn btn-primary" type="submit">Submit</button>
+          <div class="mb-3 container-bg p-3">
+            <label for="controlMeasureType" class="form-label">Select preferred control measure type:</label>
+            <select id="controlMeasureType" class="form-control" name="controlMeasureType" [(ngModel)] ="controlMeasureType" >
+                <option *ngFor="let controlMeasureType of controlMeasureTypes" [ngValue]="controlMeasureType">{{controlMeasureType}} </option>
+            </select>
+          </div>
+        </form>
+        <div class="d-grid col-6 mx-auto mb-3">
+        <button class="btn btn-success" type="submit" (click)="onClickSubmit()">Submit</button>
+        </div>
+        <div class="mb-3 container-bg1 p-3" *ngIf="determinedPestDTO!=null">
+          <label>Determined pest is {{determinedPestDTO.plant.currentPest.name}}</label>
+          <table *ngIf="determinedPestDTO.controlMeasures.length>0" class="table table-hover">
+            <thead>
+            </thead>
+            <tbody>
+              <tr *ngFor="let controlMeasure of determinedPestDTO.controlMeasures">
+                <td class="td-determined" style="white-space:pre-wrap; word-wrap:break-word"> {{controlMeasure.name}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
+
+
+  <div class="modal fade" id="modalDialog" tabindex="-1" aria-labelledby="modalDialog" aria-hidden="true">
+    <div class="modal-dialog" data-target="#modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDialog">Recognized symptom</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row justify-content-center">
+            <div class="col-md-12">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let symptom of symptoms" [class.row-is-clicked]="selectedSymptoms.has(symptom)" (click)="onRowClick(symptom)" style="cursor: pointer;">
+                    <td style="white-space:pre-wrap; word-wrap:break-word">{{symptom.name}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button class="btn btn-success m3" data-bs-dismiss="modal" (click)="onLogClick()">Log selected symptoms</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalDialogPlantPart" tabindex="-1" aria-labelledby="modalDialogPlantPart" aria-hidden="true">
+    <div class="modal-dialog" data-target="#modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDialogPlantPart">Affected plant parts</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row justify-content-center">
+            <div class="col-md-12">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let plantPart of plantParts" [class.row-is-clicked]="selectedPlantParts.has(plantPart)" (click)="onRowClickPlantPart(plantPart)" style="cursor: pointer;">
+                    <td>{{plantPart}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button class="btn btn-success m3" data-bs-dismiss="modal" (click)="onClick()">Log selected symptoms</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   

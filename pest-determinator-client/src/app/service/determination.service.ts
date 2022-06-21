@@ -13,12 +13,20 @@ export class DeterminationService {
     return this.http.get<any>('http://localhost:8080/determination/symptoms');
   }
 
+  getControlMeasureTypes(): Observable<any> {
+    return this.http.get<any>('http://localhost:8080/determination/controlMeasureTypes');
+  }
+
   getUserPlants(): Observable<any> {
     return this.http.get<any>('http://localhost:8080/plants');
   }
 
-  determinePest(): Observable<any> {
-    return this.http.get<any> ('http://localhost:8080/determination');
+  getPlantParts(): Observable<any> {
+    return this.http.get<any>('http://localhost:8080/determination/plantParts');
+  }
+
+  determinePest(determinationInputDTO: any): Observable<any> {
+    return this.http.post<any> ('http://localhost:8080/determination', determinationInputDTO);
   }
 
 }

@@ -8,3 +8,28 @@ h1{
     background-color: rgb(228, 243, 226);
     border-radius: 25px;
   }
+
+.container-bg1 {
+    background-color: rgb(95, 136, 109);
+    color:white;
+    border-radius: 25px;
+  }
+
+td { white-space:pre;
+}
+
+.td-determined {
+    color:white;
+}
+
+table {
+    width:450px;
+    table-layout:fixed;
+    }
+select {
+    width:250px;
+}
+
+.row-is-clicked {
+    font-weight: bold;
+  }

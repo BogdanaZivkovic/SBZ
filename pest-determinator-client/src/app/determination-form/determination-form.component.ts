@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { determinationInputDTO } from '../model/determinationInputDTO';
 import { DeterminationService } from '../service/determination.service';
 
 @Component({
@@ -10,30 +11,45 @@ import { DeterminationService } from '../service/determination.service';
 export class DeterminationFormComponent implements OnInit {
 
   errorMessage = '';
+
   plants: any[] = [];
-  plantParts: Array<any> = [
-    { name: 'Leaf', value: 'Leaf' },
-    { name: 'Stem', value: 'Stem' },
-    { name: 'Fruit', value: 'Fruit' },
-    { name: 'Roots', value: 'Roots' }
-  ];
-
+  plantParts: Array<any> = [];
   symptoms: Array<any> = [];
+  controlMeasureTypes: any[] = [];
 
-  public readonly determinationForm: FormGroup;
-  
-  constructor(private determinationService: DeterminationService, private formBuilder: FormBuilder) { 
-    this.determinationForm = this.formBuilder.group({
-      plant: ['', Validators.required],
-      selectedPlantParts: new FormArray([]),
-      selectedSymptoms: new FormArray([])
-    });
-  }
+  selectedSymptoms: Set<any> = new Set<any>();
+  selectedPlantParts: Set<any> = new Set<any>();
+
+  plantSpecies: any;
+  controlMeasureType: any;
+  addedSymptoms: Array<any> = [];
+  addedPlantParts: Array<any> = [];
+  determinedPestDTO: any;
+
+  constructor(private determinationService: DeterminationService) { }
 
   ngOnInit(): void {
     this.getUserPlants();
     this.getSymptoms();
+    this.getControlMeasureTypes();
+    this.getPlantParts();
   }
+
+  public onClickSubmit(): void {
+    let dto: determinationInputDTO = {
+      plantSpecies: this.plantSpecies,
+      symptoms: this.addedSymptoms,
+      affectedParts: this.addedPlantParts,
+      controlMeasureType: this.controlMeasureType
+    };
+
+    this.determinationService.determinePest(dto).subscribe({
+      next: (data) => { 
+        this.determinedPestDTO = data;
+      },
+      error: err => this.errorMessage = err
+    });
+  } 
 
   getUserPlants() {
     this.determinationService.getUserPlants().subscribe({
@@ -49,29 +65,75 @@ export class DeterminationFormComponent implements OnInit {
     })
   }
 
-  onCheckboxChange(event: any) {
-    const selectedPlantParts = (this.determinationForm.get('selectedPlantParts') as FormArray);
-    if (event.target.checked) {
-      selectedPlantParts.push(new FormControl(event.target.value));
-    } else {
-      const index = selectedPlantParts.controls
-      .findIndex(x => x.value === event.target.value);
-      selectedPlantParts.removeAt(index);
+  getControlMeasureTypes() {
+    this.determinationService.getControlMeasureTypes().subscribe({
+      next: controlMeasureTypes => this.controlMeasureTypes = controlMeasureTypes,
+      error: err => this.errorMessage = err
+    })
+  }
+
+  getPlantParts() {
+    this.determinationService.getPlantParts().subscribe({
+      next: plantParts => this.plantParts = plantParts,
+      error: err => this.errorMessage = err
+    })
+  }
+
+  onRowClick(symptom: any) {
+    if(this.selectedSymptoms.has(symptom)) {
+     this.selectedSymptoms.delete(symptom);
+    }
+    else {
+      this.selectedSymptoms.add(symptom);
     }
   }
 
-  onSymptomCheckboxChange(event: any) {
-    const selectedSymptoms = (this.determinationForm.get('selectedSymptoms') as FormArray);
-    if (event.target.checked) {
-      selectedSymptoms.push(new FormControl(event.target.value));
-    } else {
-      const index = selectedSymptoms.controls
-      .findIndex(x => x.value === event.target.value);
-      selectedSymptoms.removeAt(index);
+  onRowClickPlantPart(plantPart: any) {
+    if(this.selectedPlantParts.has(plantPart)) {
+      this.selectedPlantParts.delete(plantPart);
+     }
+     else {
+       this.selectedPlantParts.add(plantPart);
+     }
+  }
+
+  rowIsSelected(id: number) {
+    return this.selectedSymptoms.has(id);
+  }
+
+  rowIsPlantPartSelected(id: number) {
+    return this.selectedPlantParts.has(id);
+  }
+
+  getSelectedRows(){
+    return this.symptoms.filter(x => this.selectedSymptoms.has(x.id));
+  }
+
+  getSelectedRowsPlantParts(){
+    return this.plantParts.filter(x => this.selectedPlantParts.has(x.id));
+  }
+
+  onLogClick() {
+    for(let symptom of this.selectedSymptoms) {
+      if(!this.addedSymptoms.includes(symptom)) {
+        this.addedSymptoms.push(symptom);
+      }
     }
   }
 
-  public onClickSubmit(): void {
-    this.determinationService.determinePest().subscribe();
+  onClick() {
+    for(let plantPart of this.selectedPlantParts) {
+      if(!this.addedPlantParts.includes(plantPart)) {
+        this.addedPlantParts.push(plantPart);
+      }
+    }
+  }
+
+  removeSymptom(symptom: any) {
+    this.addedSymptoms.splice(this.addedSymptoms.indexOf(symptom), 1);
+  }
+
+  removePlantPart(plantPart: any) {
+    this.addedPlantParts.splice(this.addedPlantParts.indexOf(plantPart), 1);
   }
 }

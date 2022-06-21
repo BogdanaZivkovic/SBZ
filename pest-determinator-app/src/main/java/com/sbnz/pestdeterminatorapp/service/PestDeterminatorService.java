@@ -1,7 +1,6 @@
 package com.sbnz.pestdeterminatorapp.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -11,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sbnz.pestdeterminatorapp.dto.DeterminationInputDTO;
+import com.sbnz.pestdeterminatorapp.dto.DeterminedPestDTO;
+import com.sbnz.pestdeterminatorapp.dto.SymptomDTO;
 import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
 import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
 import com.sbnz.pestdeterminatorapp.model.Pest;
 import com.sbnz.pestdeterminatorapp.model.Plant;
+import com.sbnz.pestdeterminatorapp.model.PlantPart;
 import com.sbnz.pestdeterminatorapp.model.Symptom;
 import com.sbnz.pestdeterminatorapp.repository.PestRepository;
 import com.sbnz.pestdeterminatorapp.service.serviceInterface.PlantService;
@@ -31,7 +33,7 @@ public class PestDeterminatorService {
 	@Autowired
 	private PlantService plantService;
 	
-	public Plant determinePest(DeterminationInputDTO dto) {
+	public DeterminedPestDTO determinePest(DeterminationInputDTO dto) {
 		KieSession kieSession = kieContainer.newKieSession();
 		
 		List<Pest> pests = pestRepository.findAll();
@@ -44,7 +46,13 @@ public class PestDeterminatorService {
 		plant.setCurrentPest(null);
 		plant.setAffectedParts(dto.getAffectedParts());
 		plant.setPlantSpecies(dto.getPlantSpecies());
-		plant.setSymptoms(dto.getSymptoms());	
+		
+		List<Symptom> symptoms = new ArrayList<>();
+		
+		for(SymptomDTO symptomDTO: dto.getSymptoms()) {
+			symptoms.add(symptomDTO.getSymptom());
+		}
+		plant.setSymptoms(symptoms);	
 		kieSession.insert(plant);
 		
 		ControlMeasureType type = dto.getControlMeasureType();	
@@ -59,7 +67,11 @@ public class PestDeterminatorService {
 		
 		plantService.update(plant);
 		
-		return plant;
+		DeterminedPestDTO determinedPestDTO = new DeterminedPestDTO();
+		determinedPestDTO.setPlant(plant);
+		determinedPestDTO.setControlMeasures(collectedControlMeasures);
+		
+		return determinedPestDTO;
 	}
 	
 	public List<Plant> getReport() {
@@ -123,8 +135,24 @@ public class PestDeterminatorService {
 		return pestSuspects;
 	}
 	
-	public Collection<Symptom> getSymptoms() {
+	public List<SymptomDTO> getSymptoms() {
 		List<Symptom> symptomsList = new ArrayList<Symptom>(EnumSet.allOf(Symptom.class));
-		return symptomsList;
+		
+		List<SymptomDTO> symptomsDTO = new ArrayList<>();
+		
+		for(Symptom symptom : symptomsList) {
+			
+			symptomsDTO.add(new SymptomDTO(symptom));
+		}
+		
+		return symptomsDTO;
+	}
+
+	public List<ControlMeasureType> getControlMeasureTypes() {
+		return new ArrayList<ControlMeasureType>(EnumSet.allOf(ControlMeasureType.class));
+	}
+
+	public List<PlantPart> getPlantParts() {
+		return new ArrayList<PlantPart>(EnumSet.allOf(PlantPart.class));
 	}
 }
