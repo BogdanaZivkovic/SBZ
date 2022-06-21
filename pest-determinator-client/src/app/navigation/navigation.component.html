@@ -10,6 +10,12 @@
         </div>
         <div *ngIf="authService.isLoggedIn" class="navbar-nav">
           <a class="nav-link" routerLink="determination-form">Pest determination</a>
+        </div>        
+        <div *ngIf="authService.isLoggedIn" class="navbar-nav">
+          <a class="nav-link" routerLink="report">Report</a>
+        </div>
+        <div *ngIf="authService.isLoggedIn" class="navbar-nav">
+          <a class="nav-link" routerLink="pest-suspect">Pest suspects</a>
         </div>
         <div *ngIf="authService.isLoggedIn" class="navbar-nav">
           <a class="nav-link" routerLink="signout">Sign out</a>

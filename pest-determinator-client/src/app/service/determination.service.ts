@@ -29,5 +29,12 @@ export class DeterminationService {
     return this.http.post<any> ('http://localhost:8080/determination', determinationInputDTO);
   }
 
+  getReport(): Observable<any> {
+    return this.http.get<any> ('http://localhost:8080/determination/report');
+  }
+
+  getPestSuspects(): Observable<any> {
+    return this.http.get<any> ('http://localhost:8080/determination/pestSuspect');
+  }
 }
 

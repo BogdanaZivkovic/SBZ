@@ -13,6 +13,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatListModule} from '@angular/material/list';
 import {NavigationComponent } from './navigation/navigation.component';
 import {LoginComponent } from './login/login.component';
+import { ReportComponent } from './report/report.component';
+import { PestSuspectComponent } from './pest-suspect/pest-suspect.component';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import {LoginComponent } from './login/login.component';
     AppComponent,
     DeterminationFormComponent,
     NavigationComponent,
-    LoginComponent
+    LoginComponent,
+    ReportComponent,
+    PestSuspectComponent
   ],
   imports: [
     BrowserModule,
