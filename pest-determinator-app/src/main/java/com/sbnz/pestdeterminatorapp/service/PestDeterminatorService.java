@@ -42,7 +42,7 @@ public class PestDeterminatorService {
 			kieSession.insert(pest);
 		}
 		
-		Plant plant = plantService.findById(4L);
+		Plant plant = plantService.findById(dto.getId());
 		plant.setCurrentPest(null);
 		plant.setAffectedParts(dto.getAffectedParts());
 		plant.setPlantSpecies(dto.getPlantSpecies());
@@ -112,10 +112,16 @@ public class PestDeterminatorService {
 		return collectedPlants;
 	}
 	
-	public List<Pest> pestSuspect() {
+	public List<Pest> pestSuspect(Long id) {
 		KieSession kieSession = kieContainer.newKieSession();
 		
-		Plant plant = plantService.findById(4L);
+		List<Pest> pestSuspects = new ArrayList<>();
+		
+		Plant plant = plantService.findById(id);
+		
+		if(plant.getCurrentPest() == null) {
+			return pestSuspects;
+		}
 
 		kieSession.insert(plant);
 		
@@ -124,8 +130,7 @@ public class PestDeterminatorService {
 		for(Pest pest : pests) {
 			kieSession.insert(pest);
 		}
-		
-		List<Pest> pestSuspects = new ArrayList<>();
+
 		kieSession.insert(pestSuspects);
 		
 		kieSession.getAgenda().getAgendaGroup("test").setFocus();

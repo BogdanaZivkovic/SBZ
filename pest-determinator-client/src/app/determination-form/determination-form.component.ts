@@ -20,11 +20,14 @@ export class DeterminationFormComponent implements OnInit {
   selectedSymptoms: Set<any> = new Set<any>();
   selectedPlantParts: Set<any> = new Set<any>();
 
+  plant: any;
   plantSpecies: any;
   controlMeasureType: any;
   addedSymptoms: Array<any> = [];
   addedPlantParts: Array<any> = [];
   determinedPestDTO: any;
+  pestHistory: Array<any> = [];
+  controlMeasure: any;
 
   constructor(private determinationService: DeterminationService) { }
 
@@ -37,7 +40,8 @@ export class DeterminationFormComponent implements OnInit {
 
   public onClickSubmit(): void {
     let dto: determinationInputDTO = {
-      plantSpecies: this.plantSpecies,
+      id: this.plant.id,
+      plantSpecies: this.plant.plantSpecies,
       symptoms: this.addedSymptoms,
       affectedParts: this.addedPlantParts,
       controlMeasureType: this.controlMeasureType
@@ -46,6 +50,8 @@ export class DeterminationFormComponent implements OnInit {
     this.determinationService.determinePest(dto).subscribe({
       next: (data) => { 
         this.determinedPestDTO = data;
+        this.pestHistory = this.determinedPestDTO.plant.pestHistory;
+        this.controlMeasure = this.pestHistory[this.pestHistory.length - 1].controlMeasure
       },
       error: err => this.errorMessage = err
     });

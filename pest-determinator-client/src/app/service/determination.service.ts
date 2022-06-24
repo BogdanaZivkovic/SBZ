@@ -33,8 +33,8 @@ export class DeterminationService {
     return this.http.get<any> ('http://localhost:8080/determination/report');
   }
 
-  getPestSuspects(): Observable<any> {
-    return this.http.get<any> ('http://localhost:8080/determination/pestSuspect');
+  getPestSuspects(id: number): Observable<any> {
+    return this.http.get<any> ('http://localhost:8080/determination/pestSuspect/' + id);
   }
 }
 

@@ -10,6 +10,7 @@ public class DeterminationInputDTO {
 	private List<SymptomDTO> symptoms;
 	private List<PlantPart> affectedParts;
 	private PlantSpecies plantSpecies;
+	private Long id;
 	private ControlMeasureType controlMeasureType;
 	
 	
@@ -36,5 +37,11 @@ public class DeterminationInputDTO {
 	}
 	public void setControlMeasureType(ControlMeasureType controlMeasureType) {
 		this.controlMeasureType = controlMeasureType;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

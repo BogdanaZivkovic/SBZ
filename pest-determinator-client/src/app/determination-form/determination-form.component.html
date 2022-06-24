@@ -5,8 +5,8 @@
         <form #determinationForm="ngForm">
           <div class="mb-3 container-bg p-3">
             <label for="plant" class="form-label">Plant:</label>
-            <select id="plant" class="form-control" name="plantSpecies" [(ngModel)]="plantSpecies" >
-                <option *ngFor="let plant of plants" [ngValue]="plant.plantSpecies">#{{plant.id}}: {{plant.plantSpecies}} </option>
+            <select id="plant" class="form-control" name="plant" [(ngModel)]="plant" >
+                <option *ngFor="let plant of plants" [ngValue]="plant">#{{plant.id}}: {{plant.plantSpecies}} </option>
             </select>
           </div>
           <div class="mb-3 container-bg p-3">
@@ -61,6 +61,11 @@
         </div>
         <div class="mb-3 container-bg1 p-3" *ngIf="determinedPestDTO!=null">
           <label>Determined pest is {{determinedPestDTO.plant.currentPest.name}}</label>
+        </div>
+        <div class="mb-3 container-bg1 p-3" *ngIf="determinedPestDTO!=null">
+          <label>Control measure recommended:  {{controlMeasure.name}}</label>
+        </div>
+        <div class="mb-3 container-bg1 p-3" *ngIf="determinedPestDTO!=null && determinedPestDTO.controlMeasures.length>0">
           <table *ngIf="determinedPestDTO.controlMeasures.length>0" class="table table-hover">
             <thead>
             </thead>

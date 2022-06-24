@@ -9,16 +9,29 @@ import { DeterminationService } from '../service/determination.service';
 export class PestSuspectComponent implements OnInit {
 
   errorMessage = '';
+  plants: any[] = [];
+  plant: any;
   pestSuspects: any[] = [];
 
   constructor(private determinationService: DeterminationService) { }
 
   ngOnInit(): void {
-    this.getPestSuspects();
+    this.getUserPlants();
   }
 
-  getPestSuspects() {
-   this.determinationService.getPestSuspects().subscribe({
+  public onClickSubmit(): void {
+    this.getPestSuspects(this.plant.id);
+  } 
+
+  getUserPlants() {
+    this.determinationService.getUserPlants().subscribe({
+      next: plants => this.plants = plants,
+      error: err => this.errorMessage = err
+    })
+  }
+
+  getPestSuspects(id: number) {
+   this.determinationService.getPestSuspects(id).subscribe({
       next: pestSuspects => this.pestSuspects = pestSuspects,
       error: err => this.errorMessage = err
     })
