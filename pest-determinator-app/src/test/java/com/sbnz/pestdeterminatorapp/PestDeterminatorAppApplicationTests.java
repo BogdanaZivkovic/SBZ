@@ -89,6 +89,12 @@ class PestDeterminatorAppApplicationTests {
 		plant.setPestHistory(getPestHistory());
 		kieSession.insert(plant);
 		
+		List<Diagnosis> diagnosisList = plant.getPestHistory();
+		if(diagnosisList.size()>0) {
+			Diagnosis lastDiagnosis = plant.getPestHistory().get(diagnosisList.size()-1);
+			kieSession.insert(lastDiagnosis);
+		}
+		
 		ControlMeasureType type = ControlMeasureType.Mechanical;	
 		kieSession.insert(type);
 		

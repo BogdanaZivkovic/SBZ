@@ -14,6 +14,7 @@ import com.sbnz.pestdeterminatorapp.dto.DeterminedPestDTO;
 import com.sbnz.pestdeterminatorapp.dto.SymptomDTO;
 import com.sbnz.pestdeterminatorapp.model.ControlMeasure;
 import com.sbnz.pestdeterminatorapp.model.ControlMeasureType;
+import com.sbnz.pestdeterminatorapp.model.Diagnosis;
 import com.sbnz.pestdeterminatorapp.model.Pest;
 import com.sbnz.pestdeterminatorapp.model.Plant;
 import com.sbnz.pestdeterminatorapp.model.PlantPart;
@@ -46,6 +47,11 @@ public class PestDeterminatorService {
 		plant.setCurrentPest(null);
 		plant.setAffectedParts(dto.getAffectedParts());
 		plant.setPlantSpecies(dto.getPlantSpecies());
+		List<Diagnosis> diagnosisList = plant.getPestHistory();
+		if(diagnosisList.size()>0) {
+			Diagnosis lastDiagnosis = plant.getPestHistory().get(diagnosisList.size()-1);
+			kieSession.insert(lastDiagnosis);
+		}
 		
 		List<Symptom> symptoms = new ArrayList<>();
 		
@@ -104,8 +110,6 @@ public class PestDeterminatorService {
 		
 		List<Plant> collectedPlants = new ArrayList<>();
 		kieSession.insert(collectedPlants);
-		
-		//kieSession.getAgenda().getAgendaGroup("report change control measure").setFocus();
 		
 		kieSession.fireAllRules();
 		
