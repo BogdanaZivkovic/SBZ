@@ -18,7 +18,7 @@
           <a class="nav-link" routerLink="pest-suspect">Pest suspects</a>
         </div>
         <div *ngIf="authService.isLoggedIn" class="navbar-nav">
-          <a class="nav-link" routerLink="signout">Sign out</a>
+          <a class="nav-link" routerLink="login" (click)="signOut()">Sign out</a>
         </div>
       </div>
     </div>

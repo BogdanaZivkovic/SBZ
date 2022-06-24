@@ -13,4 +13,7 @@ export class NavigationComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  signOut() {
+    this.authService.isLoggedIn = false;
+  }
 }
